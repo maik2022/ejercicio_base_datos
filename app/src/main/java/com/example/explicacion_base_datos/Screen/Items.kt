@@ -350,15 +350,23 @@ fun UserApp(userRepository: UserRepository, viewModel:viewUsers){
 
                 Button(
                     onClick = {
-                        scope.launch{
-                            withContext(Dispatchers.IO){
-                                userRepository.updateUser(idBuscar.toInt(), nombreActualizado, apellidoActualizado, edadActualizado.toInt())
-                            }
 
-                            mostrarFormulario = false
-                            viewModel.obtenerUsuario()
-                            idBuscar = ""
+                        if(nombreActualizado.isBlank() || apellidoActualizado.isBlank() || edadActualizado.isBlank() || edadActualizado.toIntOrNull() == null){
+
+                            Toast.makeText(context, "Debe colocar todos los valores", Toast.LENGTH_SHORT).show()
+
+                        }else{
+                            scope.launch{
+                                withContext(Dispatchers.IO){
+                                    userRepository.updateUser(idBuscar.toInt(), nombreActualizado, apellidoActualizado, edadActualizado.toInt())
+                                }
+
+                                mostrarFormulario = false
+                                viewModel.obtenerUsuario()
+                                idBuscar = ""
+                            }
                         }
+
                     },
 
                     modifier = Modifier.fillMaxWidth()
